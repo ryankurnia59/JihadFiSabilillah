@@ -266,8 +266,6 @@ namespace TubesFixKelar
 
     public partial class Form1 : Form
     {
-
-        private Microsoft.Msagl.Drawing.Graph visualization;
         public Form1()  
         {
             InitializeComponent();
