@@ -300,50 +300,25 @@ namespace TubesFixKelar
             Hashtable nodes = new Hashtable();
             int length = str.Length;
             int i = 0;
-            Hashtable map = new Hashtable();
-            while (i < length)
-            {
+            while (str[i] != '\n')
+                i++;
+            while (i < length) {
                 int f = i;
                 while (str[i] != ' ')
-                {
-                    i += 1;
-                    if (i == length)
-                        break;
-                }
-                if (i != length)
-                    i -= 1;
-                string name = str.Substring(f, i - f);
-                i += 1;
-                ArrayList edges = new ArrayList();
-                while ((i < length) && (str[i] != '\n'))
-                {
-                    f = i;
-                    while (str[i] != ' ')
-                    {
-                        i += 1;
-                        if (i >= length)
-                            break;
-                    }
-                    if (i != length)
-                        i -= 1;
-                    edges.Add(str.Substring(f, i - f));
-                    i += 1;
-                }
-                map.Add(name, edges);
-                nodes.Add(name, new Node(name));
-            }
-            foreach (string name in nodes.Keys)
-            {
-                Node node = (Node) nodes[name];
-                ArrayList edges = (ArrayList)map[name];
-                foreach (string edgename in edges)
-                {
-                    node.addEdge((Node)nodes[edgename]);
-                }
+                    i++;
+                String name = str.Substring(f, i - 1 - f);
+                Node node = nodes.ContainsKey(name) ? (Node) nodes[name] : new Node(name);
+                f = i;
+                while (str[i] != '\n')
+                    i++;
+                nodes[name] = node;
+                String oname = str.Substring(f, i - 1 - f);
+                Node other = nodes.ContainsKey(oname) ? (Node) nodes[oname] : new Node(oname);
+                node.addEdge(other);
+                nodes[oname] = other;
             }
             ArrayList ret = new ArrayList();
-            foreach (Node node in nodes.Values)
-            {
+            foreach (Node node in nodes.Values) {
                 ret.Add(node);
             }
             return ret;
